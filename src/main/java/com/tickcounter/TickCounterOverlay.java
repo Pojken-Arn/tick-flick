@@ -22,40 +22,34 @@ public class TickCounterOverlay extends Overlay {
 
 
     @Override
-    public Dimension render(Graphics2D graphics)
-    {
-
-        for (int tick = 0; tick < config.getNumberOfTicks(); tick++)
-        {
-            int x = tick * config.getTickWidth() + tick * 2;
-
-
+    public Dimension render(Graphics2D graphics) {
+        for (int tick = 0; tick < config.getNumberOfTicks(); tick++) {
+            int x = tick * config.getTickWidth() + tick * config.getPadding();
             setTickColor(graphics, tick);
             setTickShape(graphics, x);
         }
 
-        int height = config.getTickHeight();
-        int width = (config.getNumberOfTicks() - 1) * 2 + config.getNumberOfTicks() * config.getTickWidth();
+        int width = (config.getNumberOfTicks() - 1) * config.getPadding() + config.getNumberOfTicks() * config.getTickWidth();
 
-        return new Dimension(width, height);
+        return new Dimension(width, config.getTickHeight());
     }
 
     private void setTickColor(Graphics2D graphics, int tick) {
         if (plugin.getTick() == tick) {
             graphics.setColor(setCurrentColor(tick));
-        } else if (config.helpColors() && isPrayerOnTick(tick)) {
+        } else if (config.isPrayerFlickOn() && isPrayerOnTick(tick)) {
             graphics.setColor(config.prayerOnColor());
-        } else if (config.helpColors() && isPrayerOffTick(tick)) {
+        } else if (config.isPrayerFlickOn() && isPrayerOffTick(tick)) {
             graphics.setColor(config.prayerOffColor());
         }
         else {
-            graphics.setColor(config.tickColor());
+            graphics.setColor(config.getTickColor());
         }
     }
 
     private Color setCurrentColor(int tick) {
-        if (!config.helpColors()) {
-            return config.currentTickColor();
+        if (!config.isPrayerFlickOn()) {
+            return config.getCurrentTickColor();
         }
 
         if (isPrayerOnTick(tick)) {
@@ -63,26 +57,22 @@ public class TickCounterOverlay extends Overlay {
         } else if (isPrayerOffTick(tick)) {
             return config.currentPrayerOffColor();
         } else {
-            return config.currentTickColor();
+            return config.getCurrentTickColor();
         }
     }
 
-
     private boolean isPrayerOnTick(int tick) {
-        return (tick == config.startTick());
+        return (tick == calculateOffset());
     }
 
     private boolean isPrayerOffTick(int tick) {
 
-        return (config.getNumberOfTicks() == config.startTick() + 1 && tick == 0)
-                || config.getNumberOfTicks() != config.startTick() + 1 && tick == config.startTick() +1;
+        return (config.getNumberOfTicks() == calculateOffset() + 1 && tick == 0)
+                || config.getNumberOfTicks() != calculateOffset() + 1 && tick == calculateOffset() +1;
     }
 
-
-
-
     private void setTickShape(Graphics2D graphics, int xPosition) {
-        switch (config.tickShape()) {
+        switch (config.getTickShape()) {
             case CIRCLE:
                 graphics.fillOval(xPosition, 0, config.getTickWidth(), config.getTickHeight());
                 break;
@@ -93,6 +83,13 @@ public class TickCounterOverlay extends Overlay {
                 graphics.fillRect(xPosition, 0, config.getTickWidth(), config.getTickHeight());
                 break;
         }
+    }
+
+    private int calculateOffset() {
+        if (config.getOffset() < config.getNumberOfTicks()){
+            return config.getOffset();
+        }
+        return config.getOffset()% config.getNumberOfTicks();
     }
 
 

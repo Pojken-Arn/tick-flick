@@ -18,9 +18,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class TickCounterPlugin extends Plugin
 {
 	@Inject
-	private Client client;
-
-	@Inject
 	private TickCounterConfig config;
 
 
@@ -32,7 +29,6 @@ public class TickCounterPlugin extends Plugin
 
 
 	private int tick = 0;
-	private boolean isCombat = false;
 
 	public int getTick() {
 		return tick;
@@ -42,7 +38,12 @@ public class TickCounterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		isCombat = true;
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	@Subscribe
@@ -50,19 +51,17 @@ public class TickCounterPlugin extends Plugin
 	{
 		if (statChanged.getSkill() == Skill.HITPOINTS)
 		{
-			if (config.resetCounter()) {
-				tick = config.startTick();
+			if (config.isPrayerFlickOn()) {
+				tick = config.getOffset();
 			}
 		}
 	}
 
 	@Subscribe
 	private void onGameTick(GameTick gameTick) {
-		if (isCombat) {
-			tick++;
-			if(tick > config.getNumberOfTicks() - 1) {
-				tick = 0;
-			}
+		tick++;
+		if (tick > config.getNumberOfTicks() - 1) {
+			tick = 0;
 		}
 	}
 

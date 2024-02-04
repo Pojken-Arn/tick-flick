@@ -13,6 +13,8 @@ public interface TickCounterConfig extends Config
 	String GENERAL_SETTINGS = "General-settings";
 	String ALTERNATIVE_SETTINGS = "Alternative-settings";
 
+
+	// General settings
 	@ConfigSection(
 			name = "General",
 			description = "General settings",
@@ -25,7 +27,7 @@ public interface TickCounterConfig extends Config
 			position = 0,
 			keyName = "number-of-ticks",
 			name = "Number of ticks",
-			description = "Number of ticks",
+			description = "Number of ticks. (Ticks based of the weapon if you're using [Prayer flick settings])",
 			section = generalSettings
 	)
 	@Range(min = 2, max = 20)
@@ -42,7 +44,7 @@ public interface TickCounterConfig extends Config
 			section = generalSettings
 	)
 	@Alpha
-	default Color currentTickColor() {
+	default Color getCurrentTickColor() {
 		return new Color(255, 255, 255, 255);
 	}
 
@@ -54,7 +56,7 @@ public interface TickCounterConfig extends Config
 			section = generalSettings
 	)
 	@Alpha
-	default Color tickColor() {
+	default Color getTickColor() {
 		return new Color(61, 61, 61, 255);
 	}
 
@@ -66,7 +68,7 @@ public interface TickCounterConfig extends Config
 			position =3,
 			section = generalSettings
 	)
-	default TickShape tickShape()
+	default TickShape getTickShape()
 	{
 		return TickShape.SQUARE;
 	}
@@ -109,56 +111,55 @@ public interface TickCounterConfig extends Config
 		return 5;
 	}
 
+	@ConfigItem(
+			position = 7,
+			keyName = "padding-between-ticks",
+			name = "Padding",
+			description = "Padding between ticks",
+			section = generalSettings
+	)
+	@Range(min = 2, max = 50)
+	default int getPadding() {
+		return 2;
+	}
 
+	// Alternative settings
 	@ConfigSection(
-			name = "Alternative",
+			name = "Prayer flick",
 			description = "Alternative settings",
 			position = 1
 	)
 	String alternativeSettings = ALTERNATIVE_SETTINGS;
 
 	@ConfigItem(
+			position = 0,
+			keyName = "prayer-flicker",
+			name = "Count after xp drop (HP)",
+			description = "Add color to ticks for when to turn on/off offensive prayers. " +
+					"Counter will start based on xp drops (Hitpoints)",
+			section = alternativeSettings
+	)
+	default boolean isPrayerFlickOn() {
+		return false;
+	}
+
+	@ConfigItem(
 			position = 1,
-			keyName = "start-tick",
+			keyName = "offset",
 			name = "Offset",
-			description = "Which tick to register the xp-drop",
+			description = "Offset the tick which register the xp-drop",
 			section = alternativeSettings
 	)
 	@Range(min = 0, max = 20)
-	default int startTick() {
+	default int getOffset() {
 		return 0;
-	}
-
-
-
-	@ConfigItem(
-			position = 0,
-			keyName = "reset-counter",
-			name = "Reset counter on xp drop (HP)",
-			description = "",
-			section = alternativeSettings
-	)
-	default boolean resetCounter() {
-		return false;
 	}
 
 	@ConfigItem(
 			position = 2,
-			keyName = "help-color",
-			name = "Prayer colors",
-			description = "Add color to ticks for when to turn on/ off offensive prayers." +
-					"Only works if you have (reset counter) ON and position will be based on (Tick to register)",
-			section = alternativeSettings
-	)
-	default boolean helpColors() {
-		return false;
-	}
-
-	@ConfigItem(
-			position = 3,
 			keyName = "current-prayer-on",
 			name = "Current prayer-on",
-			description = "",
+			description = "Color when the current tick",
 			section = alternativeSettings
 	)
 	@Alpha
@@ -167,10 +168,10 @@ public interface TickCounterConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
+			position = 3,
 			keyName = "prayer-on-color",
 			name = "Prayer-on",
-			description = "",
+			description = "Color when not the current tick",
 			section = alternativeSettings
 	)
 	@Alpha
@@ -179,10 +180,10 @@ public interface TickCounterConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
+			position = 4,
 			keyName = "current-prayer-off",
 			name = "Current prayer-off",
-			description = "",
+			description = "Color when the current tick",
 			section = alternativeSettings
 	)
 	@Alpha
@@ -191,10 +192,10 @@ public interface TickCounterConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 6,
+			position = 5,
 			keyName = "prayer-off",
 			name = "Prayer-off",
-			description = "",
+			description = "Color when not the current tick",
 			section = alternativeSettings
 	)
 	@Alpha
