@@ -13,19 +13,19 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Tick Counter"
+	name = "Custom Ticks"
 )
-public class TickCounterPlugin extends Plugin
+public class CustomTicksPlugin extends Plugin
 {
 	@Inject
-	private TickCounterConfig config;
+	private CustomTicksConfig config;
 
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private TickCounterOverlay overlay;
+	private CustomTicksOverlay overlay;
 
 
 	private int tick = 0;
@@ -66,8 +66,8 @@ public class TickCounterPlugin extends Plugin
 	}
 
 	@Provides
-	TickCounterConfig provideConfig(ConfigManager configManager)
+	CustomTicksConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(TickCounterConfig.class);
+		return configManager.getConfig(CustomTicksConfig.class);
 	}
 }

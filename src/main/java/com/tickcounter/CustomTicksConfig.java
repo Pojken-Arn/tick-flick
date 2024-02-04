@@ -6,8 +6,8 @@ import net.runelite.client.config.*;
 
 import java.awt.*;
 
-@ConfigGroup(TickCounterConfig.GROUP_NAME)
-public interface TickCounterConfig extends Config
+@ConfigGroup(CustomTicksConfig.GROUP_NAME)
+public interface CustomTicksConfig extends Config
 {
 	String GROUP_NAME = "tick-settings";
 	String GENERAL_SETTINGS = "General-settings";

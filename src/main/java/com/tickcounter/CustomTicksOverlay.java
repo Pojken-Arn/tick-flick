@@ -6,19 +6,19 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import javax.inject.Inject;
 import java.awt.*;
 
-public class TickCounterOverlay extends Overlay {
+public class CustomTicksOverlay extends Overlay {
 
     @Inject
-    public TickCounterOverlay()
+    public CustomTicksOverlay()
     {
         setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
     }
 
     @Inject
-    TickCounterConfig config;
+    CustomTicksConfig config;
 
     @Inject
-    TickCounterPlugin plugin;
+    CustomTicksPlugin plugin;
 
 
     @Override

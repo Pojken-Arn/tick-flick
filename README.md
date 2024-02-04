@@ -1,4 +1,4 @@
-# Tick Counter
+# Custom Ticks
 
 Adds a visual tick counter.
 
